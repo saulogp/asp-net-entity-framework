@@ -1,18 +1,21 @@
 ﻿using FilmeLivroEntityFramework.Dal;
 using FilmeLivroEntityFramework.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FilmeLivroEntityFramework.Controllers
 {
-    public class MovieController : Controller
+    public class BookController : Controller
     {
-        private MovieContext _ctxMovie = new MovieContext();
+        private BookContext _ctxBook = new BookContext();
 
-        // GET: Movie
+        // GET: Book
         public ActionResult Index()
         {
-            return View(_ctxMovie.Movies.ToList());
+            return View(_ctxBook.Books.ToList());
         }
 
         public ActionResult Create()
@@ -22,45 +25,45 @@ namespace FilmeLivroEntityFramework.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Movie m)
+        public ActionResult Create(Book b)
         {
             if (ModelState.IsValid)
             {
-                _ctxMovie.Movies.Add(m);
-                _ctxMovie.SaveChanges();
+                _ctxBook.Books.Add(b);
+                _ctxBook.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(m);
+            return View(b);
         }
 
         public ActionResult Edit(int id)
         {
-            return View(_ctxMovie.Movies.First(m => m.Id == id));
+            return View(_ctxBook.Books.First(b => b.Id == id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Movie movie)
+        public ActionResult Edit(Book book)
         {
             if (ModelState.IsValid)
             {
-                Movie movieUpdate = _ctxMovie.Movies.First(m => m.Id == movie.Id);
-                movieUpdate.Note = movie.Note;
-                movieUpdate.Title = movie.Title;
-                movieUpdate.Director = movie.Director;
+                Book bookUpdate = _ctxBook.Books.First(b=> b.Id == book.Id);
+                bookUpdate.Note = book.Note;
+                bookUpdate.Title = book.Title;
+                bookUpdate.Autor = book.Autor;
                 return RedirectToAction("Index");
             }
-            return View(movie);
+            return View(book);
         }
 
         public ActionResult Details(int id)
         {
-            return View(_ctxMovie.Movies.First(m => m.Id == id));
+            return View(_ctxBook.Books.First(b => b.Id == id));
         }
 
         public ActionResult Delete(int id)
         {
-            return View(_ctxMovie.Movies.First(m => m.Id == id));
+            return View(_ctxBook.Books.First(b => b.Id == id));
         }
 
 
@@ -68,11 +71,10 @@ namespace FilmeLivroEntityFramework.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirm(int id)
         {
-            var movie = _ctxMovie.Movies.First(m => m.Id == id);
-            _ctxMovie.Movies.Remove(movie);
-            _ctxMovie.SaveChanges();
+            var book = _ctxBook.Books.First(b => b.Id == id);
+            _ctxBook.Books.Remove(book);
+            _ctxBook.SaveChanges();
             return RedirectToAction("Index");
         }
-
     }
 }
